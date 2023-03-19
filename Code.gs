@@ -38,32 +38,31 @@
 
 function isPayed(intraId, needPoint) {
   var total = writeToSheet(intraId);
-  if (total >= needPoint)
-    return true;
-  else
-    return false;
+  if (total >= needPoint) return true;
+  else return false;
 }
 
 function onRowInsert() {
-  var values = SpreadsheetApp.getActive().getSheetByName('예약').getDataRange().getValues();
+  var values = SpreadsheetApp.getActive()
+    .getSheetByName('예약')
+    .getDataRange()
+    .getValues();
   var sheet = SpreadsheetApp.getActive().getSheetByName('예약');
   for (var i = 1; i < values.length; i++) {
     console.log(i, '[ 5열,6열 = ] <', values[i][5], '> <', values[i][6], '>');
-    if (values[i][6] && values[i][7] == "") {
-      console.log("지불처리되었지만 승인이 되지 않음.");
+    if (values[i][6] && values[i][7] == '') {
+      console.log('지불처리되었지만 승인이 되지 않음.');
       var intraId = values[i][4];
       try {
         if (isPayed(intraId, 1)) {
           // 금일 일정포인트 이상 기부했다면
-          sheet.getRange(i + 1, 8).setValue("승인완료");
+          sheet.getRange(i + 1, 8).setValue('승인완료');
           saveApprovedAds(values[i]);
-        }
-        else
-            sheet.getRange(i + 1, 8).setValue("실패🤪");
+        } else sheet.getRange(i + 1, 8).setValue('실패🤪');
       } catch (e) {
-          console.log(e);
-          sheet.getRange(i + 1, 8).setValue("실패🤪");
-     }
+        console.log(e);
+        sheet.getRange(i + 1, 8).setValue('실패🤪');
+      }
     }
   }
 }

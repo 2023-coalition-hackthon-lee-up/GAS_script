@@ -1,22 +1,32 @@
-function getNotionDBProperties(dbID) {
+function JsonFile() {
+  var fileId = '1vaFVvcJbXmONjf6YS8hCOtQN2F22ecI7';
+  var file = DriveApp.getFileById(fileId); // Replace YOUR_FILE_ID with the ID of your JSON file in Drive
+  var contents = file.getBlob().getDataAsString();
+  var data = JSON.parse(contents);
 
-  let url = "https://api.notion.com/v1/databases/" + dbID + "/query";
+  return data;
+}
+
+function getNotionDBProperties(dbID) {
+  var envs = JsonFile();
+
+  let url = 'https://api.notion.com/v1/databases/' + dbID + '/query';
   let opts = {
-    "method": "POST",
-    "headers": {
-      "Authorization": "secret_DLvTKyHgyyEbZbYoUjvIbtwlhaCPp0qD15qYSenjU29", // 노션 API 사용을 위한 토큰
-      "Notion-Version": "2022-06-28",
-      "Content-Type": "application/json"
+    method: 'POST',
+    headers: {
+      Authorization: env.notion_Authorization, // 노션 API 사용을 위한 토큰
+      'Notion-Version': '2022-06-28',
+      'Content-Type': 'application/json',
     },
-    "payload": JSON.stringify({
-      "sorts": [
+    payload: JSON.stringify({
+      sorts: [
         {
-          "property": "생성 일시",
-          "direction": "ascending"
-        }
-      ]
+          property: '생성 일시',
+          direction: 'ascending',
+        },
+      ],
     }),
-    "muteHttpExceptions" : true
+    muteHttpExceptions: true,
   };
 
   let response = UrlFetchApp.fetch(url, opts); // 노션  API로 데이터 요청
@@ -28,7 +38,7 @@ function getNotionDBProperties(dbID) {
 }
 
 function crawlNotionDatabase() {
-  var resData = getNotionDBProperties("5510772006a74982a9884e73595899fd");
+  var resData = getNotionDBProperties(notion_Authorization.NotionDBProperties);
 
   //console.log(data);
   // 데이터베이스 내의 페이지들을 하나씩 불러오면서 제목과 내용을 출력
@@ -40,18 +50,19 @@ function crawlNotionDatabase() {
     var startDate = page.properties['광고 일시']?.date?.start;
     var endDate = page.properties['광고 일시']?.date?.end;
     var point = 1;
-    var intraID = page.properties['지불인 intra id']?.rich_text[0]?.text.content;
+    var intraID =
+      page.properties['지불인 intra id']?.rich_text[0]?.text.content;
     var isPayed = page.properties['지불 완료']?.checkbox;
     // console.log(isPayed);
     var adUrl = page.properties['유튜브 url']?.rollup?.array[0]?.url;
 
-    sheet.getRange(i+2, 1).setValue(title);
-    sheet.getRange(i+2, 2).setValue(startDate);
-    sheet.getRange(i+2, 3).setValue(endDate);
-    sheet.getRange(i+2, 4).setValue(point);
-    sheet.getRange(i+2, 5).setValue(intraID);
-    sheet.getRange(i+2, 6).setValue(adUrl);
-    sheet.getRange(i+2, 7).setValue(isPayed);
+    sheet.getRange(i + 2, 1).setValue(title);
+    sheet.getRange(i + 2, 2).setValue(startDate);
+    sheet.getRange(i + 2, 3).setValue(endDate);
+    sheet.getRange(i + 2, 4).setValue(point);
+    sheet.getRange(i + 2, 5).setValue(intraID);
+    sheet.getRange(i + 2, 6).setValue(adUrl);
+    sheet.getRange(i + 2, 7).setValue(isPayed);
 
     //SpreadsheetApp.getActiveSheet().getRange(i+2, 1).setValue(title);
     //SpreadsheetApp.getActiveSheet().getRange(i+2, 2).setValue(content);

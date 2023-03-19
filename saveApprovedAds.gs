@@ -6,7 +6,7 @@ function findFirstEmptyRow(sheet) {
     var isRowEmpty = true;
 
     for (var j = 0; j < row.length; j++) {
-      if (row[j] != "") {
+      if (row[j] != '') {
         isRowEmpty = false;
         break;
       }
@@ -23,7 +23,6 @@ function saveApprovedAds(values) {
   var sheet = SpreadsheetApp.getActive().getSheetByName('승인 완료 예약');
   var row = findFirstEmptyRow(sheet);
 
-  console.log("save Approved Ads \n" + values);
-  for (var j = 0; j < 8; j++)
-    sheet.getRange(row, j + 1).setValue(values[j]);
+  console.log('save Approved Ads \n' + values);
+  for (var j = 0; j < 8; j++) sheet.getRange(row, j + 1).setValue(values[j]);
 }
