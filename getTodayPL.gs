@@ -1,5 +1,5 @@
 function getTodayPL() {
-  clearPlayList();
+  // clearPlayList();
   var sheet = SpreadsheetApp.getActive().getSheetByName('오늘의 광고 편성표');
   clearData(sheet);
   var targetSheet = SpreadsheetApp.getActive().getSheetByName('승인 완료 예약');

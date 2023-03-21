@@ -5,7 +5,7 @@ function clearData(sheet) {
   var numColumns = sheet.getLastColumn() - startColumn + 1;
 
   if (numRows > 0 && numColumns > 0) {
-    var dataRange = sheet.getRange(startRow, startColumn, numRows, numColumns);
+    var dataRange = sheet.getRange(startRow, startColumn, numRows, numColumns - 1);
     dataRange.clearContent();
   }
 }

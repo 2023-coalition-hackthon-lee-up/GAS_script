@@ -10,8 +10,8 @@ function JsonFile() {
 function getNotionDBProperties(dbID) {
   var envs = JsonFile();
 
-  let url = 'https://api.notion.com/v1/databases/' + dbID + '/query';
-  let opts = {
+  var url = 'https://api.notion.com/v1/databases/' + dbID + '/query';
+  var opts = {
     method: 'POST',
     headers: {
       Authorization: env.notion_Authorization, // 노션 API 사용을 위한 토큰
@@ -29,10 +29,10 @@ function getNotionDBProperties(dbID) {
     muteHttpExceptions: true,
   };
 
-  let response = UrlFetchApp.fetch(url, opts); // 노션  API로 데이터 요청
+  var response = UrlFetchApp.fetch(url, opts); // 노션  API로 데이터 요청
 
-  let json = response.getContentText();
-  let DBdata = JSON.parse(json);
+  var json = response.getContentText();
+  var DBdata = JSON.parse(json);
 
   return DBdata;
 }

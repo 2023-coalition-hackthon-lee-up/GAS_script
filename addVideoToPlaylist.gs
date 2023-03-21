@@ -11,11 +11,11 @@ function addVideoToPlaylist() {
   var envs = JsonFile();
   var sheet = SpreadsheetApp.getActive().getSheetByName('오늘의 광고 편성표');
   var data = sheet.getDataRange().getValues();
-  var playlistId = env.playlistId;
+  var playlistId = envs.playlistId;
 
   for (var i = 1; i < data.length; i++) {
     var videoUrl = data[i][5]; // 비디오url의 열이 index: 5에 있다고 가정합니다.
-    if (videoUrl == '') continue;
+    if (videoUrl == '' || data[i][7] == "yes" ) continue;
     var videoId = getVideoId(videoUrl);
     try {
       var result = YouTube.PlaylistItems.insert(
@@ -31,6 +31,7 @@ function addVideoToPlaylist() {
       console.log(e.details.errors);
     }
     console.log(result);
+    sheet.getRange(i + 1, 8).setValue("yes");
   }
 }
 
